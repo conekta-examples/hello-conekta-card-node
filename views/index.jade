@@ -1,0 +1,62 @@
+extends layout
+
+block content
+  h1 Tokenizar tarjeta y generar cargo
+  form#card-form(method="post", action="/checkouts/charge")
+    input(type="hidden", name="currency", value="MXN")
+    input(type="hidden", name="description", value="Pizza Delivery at test")
+    input(type="hidden", name="reference_id", value="001-id-test")
+    input(type="hidden", name="type", value="card")
+    p
+        label Cargo en centavos
+        | &nbsp;
+        input(type="text", name="amount")
+    p
+        label Email del comprador
+        | &nbsp;
+        input(type="email", name="details[email]")
+    p
+        label Nombre del tarjeta habiente
+        | &nbsp;
+        input(type="text", minlength="4", data-conekta="card[name]")
+    p
+        label Número de tarjeta de crédito
+        | &nbsp;
+        input(type="text", maxlength="16", minlength="15", data-conekta="card[number]")
+    p
+        label CVC
+        | &nbsp;
+        input(type="text", maxlength="4", minlength="3", data-conekta="card[cvc]")
+    p
+        label Fecha de expiración (MM/AAAA)
+        | &nbsp;
+        input(type="text", maxlength="2", minlength="2", data-conekta="card[exp_month]")
+        | /
+        input(type="text", maxlength="4", minlength="4", data-conekta="card[exp_year]")
+    p
+        button(type="submit") ¡Pagar ahora!
+
+block script
+    script.
+        Conekta.setPublishableKey('key_KJysdbf6PotS2ut2');
+        
+        $(document).ready(function() {
+            $("#card-form").submit(function(e) {
+                var $form;
+                $form = $(this);
+                
+                //Prevent multiple submits
+                $form.find("button").prop("disabled", true);
+
+                //Tokenize credit card
+                Conekta.token.create($form, function(res) {
+                    $form.append('<input type="hidden" name="card" value="' + res.id + '">');
+                    $form.get(0).submit();
+                }, function(err) {
+                    $form.find("button").prop("disabled", false);
+                    alert(err);
+                });
+
+                return false;
+            });
+        });
