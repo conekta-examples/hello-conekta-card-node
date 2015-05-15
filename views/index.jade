@@ -6,7 +6,6 @@ block content
     input(type="hidden", name="currency", value="MXN")
     input(type="hidden", name="description", value="Pizza Delivery at test")
     input(type="hidden", name="reference_id", value="001-id-test")
-    input(type="hidden", name="type", value="card")
     p
         label Cargo en centavos
         | &nbsp;
@@ -45,10 +44,10 @@ block script
                 var $form;
                 $form = $(this);
                 
-                //Prevent multiple submits
+                //Preven multiples submits
                 $form.find("button").prop("disabled", true);
 
-                //Tokenize credit card
+                //Tokenizar la tarjeta de crédito
                 Conekta.token.create($form, function(res) {
                     $form.append('<input type="hidden" name="card" value="' + res.id + '">');
                     $form.get(0).submit();
