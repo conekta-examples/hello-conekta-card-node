@@ -26,13 +26,14 @@ app.post('/checkouts/charge', function(req, res) {
   var keys = require('./keys.json'),
     conekta = require('conekta');
   conekta.api_key = keys.private_key;
-  conekta.Charge.create(req.body, function(charge) {
+  conekta.Charge.create(req.body, function(err, charge) {
+    if (err) {
+      return res.render('charge', {
+        charge: err
+      });
+    }
     res.render('charge', {
       charge: charge.toObject()
-    });
-  }, function(err) {
-    res.render('charge', {
-      charge: err
     });
   });
 });

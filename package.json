@@ -13,6 +13,6 @@
     "jade": "~1.9.2",
     "morgan": "~1.5.1",
     "serve-favicon": "~2.2.0",
-    "conekta": "https://github.com/conekta/conekta-node/archive/dev.tar.gz"
+    "conekta": "1.1.0"
   }
 }
