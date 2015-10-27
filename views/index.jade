@@ -37,8 +37,6 @@ block content
 
 block script
     script.
-        Conekta.setPublishableKey('key_KJysdbf6PotS2ut2');
-        
         $(document).ready(function() {
             $("#card-form").submit(function(e) {
                 var $form;
@@ -48,7 +46,7 @@ block script
                 $form.find("button").prop("disabled", true);
 
                 //Tokenizar la tarjeta de crédito
-                Conekta.token.create($form, function(res) {
+                Conekta.Token.create($form, function(res) {
                     $form.append('<input type="hidden" name="card" value="' + res.id + '">');
                     $form.get(0).submit();
                 }, function(err) {
